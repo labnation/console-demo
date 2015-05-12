@@ -142,7 +142,9 @@ namespace SmartScopeConsole
 		/// </summary>
 		static void PrintVoltageBars (DataPackageScope p, EventArgs e)
 		{
-			int consoleWidth = Console.WindowWidth;
+			int consoleWidth = Console.BufferWidth;
+			if(consoleWidth < 50)
+				consoleWidth = 50;	
 			int voltageBarWidth = consoleWidth / 2 - 12;
 			string voltageBar = new string ('-', voltageBarWidth);
 
@@ -176,7 +178,7 @@ namespace SmartScopeConsole
 				//Compute where to place the voltage measurement so as not to overlap with
 				//the '*' mark
 
-				int valuePosition = voltageBarWidth * (averageRelative > 0.6f ? 1 : 5) / 6  - val.Length / 2;
+				int valuePosition = voltageBarWidth * (averageRelative > 0.51f ? 1 : 5) / 6  - val.Length / 2;
 				b = b.Overwrite (valuePosition, val);
 				line += b;
 				line += "]";
