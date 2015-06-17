@@ -29,5 +29,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None> 
     <Compile Include="Main.cs" />
+    <Compile Include="Interface.cs" />
   </Files>
 </Project>
