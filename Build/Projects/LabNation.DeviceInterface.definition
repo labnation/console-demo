@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="LabNation.DeviceInterface" Path="DeviceInterface" Type="Library" Platforms="Android,iOS,Linux,MacOS,Windows">
+  <Properties>
+    <FrameworkVersions>
+      <Platform Name="Android">
+        <Version>v4.0.3</Version>
+      </Platform>
+    </FrameworkVersions>
+    <RootNamespace>LabNation.DeviceInterface</RootNamespace>
+    <PlatformSpecificOutputFolder>True</PlatformSpecificOutputFolder>
+    <CustomDefinitions>
+      <Platform Name="Android">TRACE;ANDROID</Platform>
+      <Platform Name="iOS">IOS</Platform>
+      <Platform Name="Linux">TRACE;LINUX</Platform>
+      <Platform Name="MacOS">MONOMAC</Platform>
+      <Platform Name="Windows">TRACE;WINDOWS;WINUSB</Platform>
+    </CustomDefinitions>
+	<NoWarn>1591</NoWarn>
+  </Properties>
+  <References>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="MonoPlatformSpecific" />
+    <Reference Include="LabNation.Common" />
+    <Reference Include="MatlabFileIO" />
+    <Reference Include="WinFormReferences" />
+    <Reference Include="LibUsbDotNet" />
+  </References>
+  <Files>
+    <Compile Include="DataSources\DataPackages\DataPackageScope.cs" />
+    <Compile Include="DataSources\DataSourceScope.cs" />
+    <Compile Include="DataSources\DataStorage\ChannelBuffer.cs" />
+    <Compile Include="DataSources\DataStorage\ChannelBufferTypes.cs" />
+    <Compile Include="DataSources\DataStorage\IChannelBuffer.cs" />
+    <Compile Include="DataSources\DataStorage\RecordingHandler.cs" />
+    <Compile Include="DataSources\DataStorage\RecordingScope.cs" />
+    <Compile Include="Memories\ByteMemory.cs" />
+    <Compile Include="Memories\DeviceMemory.cs" />
+    <Compile Include="Memories\MAX19506Memory.cs" />
+    <Compile Include="Memories\Registers\BoolRegister.cs" />
+    <Compile Include="Memories\Registers\ByteRegister.cs" />
+    <Compile Include="Memories\Registers\MemoryRegister.cs" />
+    <Compile Include="Memories\ScopeConstants_GEN.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScopeConstants_GEN.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Memories\ScopeFpgaRom.cs" />
+    <Compile Include="Memories\ScopeFpgaSettingsMemory.cs" />
+    <Compile Include="Memories\ScopePicRegisterMemory.cs" />
+    <Compile Include="Memories\ScopeStrobeMemory.cs" />
+	<Compile Include="Devices\DeviceManager.cs" />
+    <Compile Include="Devices\IScope.cs" />
+	<Compile Include="Devices\IDevice.cs" />
+	<Compile Include="Devices\IWaveGenerator.cs" />
+    <Compile Include="Devices\ScopeChannel.cs" />
+    <Compile Include="Devices\DummyScope.cs" />
+    <Compile Include="Devices\DummyScopeFile.cs" />
+    <Compile Include="Devices\DummyScopeWaves.cs" />
+    <Compile Include="Devices\SmartScope.cs" />
+    <Compile Include="Devices\SmartScopeFlashHelpers.cs" />
+    <Compile Include="Devices\SmartScopeHeader.cs" />
+    <Compile Include="Devices\SmartScopeRom.cs" />
+    <Compile Include="Devices\SmartScopeSettings.cs" />
+	<Compile Include="Devices\SmartScopeRegisterGroups.cs" />
+	<Compile Include="Devices\SmartScopeAwg.cs" />
+    <Compile Include="Hardware\InterfaceManager.cs" />
+    <Compile Include="Hardware\InterfaceManagerLibUsb.cs">
+      <Platforms>iOS,Linux,MacOS</Platforms>
+    </Compile>
+    <Compile Include="Hardware\InterfaceManagerWinUsb.cs">
+      <Platforms>Windows</Platforms>
+    </Compile>
+    <Compile Include="Hardware\InterfaceManagerXamarin.cs">
+      <Platforms>Android</Platforms>
+    </Compile>
+    <Compile Include="Hardware\ISmartScopeUsbInterface.cs" />
+    <Compile Include="Hardware\SmartScopeUsbInterfaceHelpers.cs" />
+    <Compile Include="Hardware\SmartScopeUsbInterfaceLibUsb.cs">
+      <Platforms>iOS,Linux,MacOS</Platforms>
+    </Compile>
+    <Compile Include="Hardware\SmartScopeUsbInterfaceWinUsb.cs">
+      <Platforms>Windows</Platforms>
+    </Compile>
+    <Compile Include="Hardware\SmartScopeUsbInterfaceXamarin.cs">
+      <Platforms>Android</Platforms>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.cs" />
+    <None Include="Memories\ScopeConstants_GEN.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ScopeConstants_GEN.cs</LastGenOutput>
+    </None>
+    <None Include="libusb\libusb-1.0.0.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="LibUsbDotNet.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Platforms>MacOS,Linux</Platforms>
+    </None>
+    <None Include="packages.config" />
+    <EmbeddedResource Include="i2c_sequence.mat" />
+    <EmbeddedResource Include="SmartScope_A10.bin" />
+    <EmbeddedResource Include="SmartScope_A12.bin" />
+	<EmbeddedResource Include="SmartScope_A14.bin" />
+	
+	<Content Include="driver\wdi-simple.exe">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<Platforms>Windows</Platforms>
+	</Content>
+	<Content Include="driver\install_smartscope_driver.bat">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<Platforms>Windows</Platforms>
+	</Content>
+  </Files>
+</Project>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="mono-curses">
+<Platform Type="Windows">
+    <Project
+		Name="mono-curses"
+		Guid="B1089A76-F6BE-4F5B-AD31-3296CD5CD922"
+		Path="mono-curses/mono-curses.csproj">
+    </Project>
+ </Platform>
+  <Platform Type="MacOS">
+    <Project
+		Name="mono-curses"
+		Guid="B1089A76-F6BE-4F5B-AD31-3296CD5CD922"
+		Path="mono-curses/mono-curses.csproj">
+    </Project>
+ </Platform>
+  <Platform Type="Linux">
+    <Project
+		Name="mono-curses"
+		Guid="B1089A76-F6BE-4F5B-AD31-3296CD5CD922"
+		Path="mono-curses/mono-curses.csproj">
+    </Project>
+ </Platform>
+</ExternalProject>

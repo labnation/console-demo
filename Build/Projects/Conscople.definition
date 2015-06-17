@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Conscople" Path="Conscople" Type="Console" Platforms="Linux,MacOS,Windows">
+  <References>
+    <Reference Include="System" />
+    <Reference Include="LabNation.Common" />
+    <Reference Include="LabNation.DeviceInterface" />
+    <Reference Include="mono-curses" />
+  </References>
+  <Properties>
+    <FrameworkVersions>
+      <Platform Name="Android">
+        <Version>v4.2</Version>
+      </Platform>
+    </FrameworkVersions>  
+	<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <NoWarn>1591</NoWarn>
+    <RootNamespace>SmartScope on Console</RootNamespace>
+    <PlatformSpecificOutputFolder>True</PlatformSpecificOutputFolder>
+    <CustomDefinitions>
+      <Platform Name="Android">TRACE;ANDROID</Platform>
+      <Platform Name="Linux">TRACE;LINUX</Platform>
+      <Platform Name="MacOS">MONOMAC</Platform>
+      <Platform Name="Windows">TRACE;WINDOWS</Platform>
+    </CustomDefinitions>
+  </Properties>
+  <Files>
+    <None Include="..\mono-curses\libmono-curses.dylib">
+      <Link>libmono-curses.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None> 
+    <Compile Include="Main.cs" />
+  </Files>
+</Project>
