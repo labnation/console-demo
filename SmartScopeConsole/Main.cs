@@ -63,6 +63,7 @@ namespace SmartScopeConsole
 			switch (k.Key) {
 				case ConsoleKey.Q:
 				case ConsoleKey.X:
+                case ConsoleKey.Escape:
 					running = false;
 					break;
 
