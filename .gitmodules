@@ -7,9 +7,6 @@
 [submodule "LibUsbDotNet"]
 	path = LibUsbDotNet
 	url = https://github.com/labnation/LibUsbDotNet
-[submodule "mono-curses"]
-	path = mono-curses
-	url = https://github.com/mono/mono-curses/
 [submodule "MatlabFileDotNet"]
 	path = MatlabFileDotNet
 	url = https://github.com/labnation/MatlabFileDotNet

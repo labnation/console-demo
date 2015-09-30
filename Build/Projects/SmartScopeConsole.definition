@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Name="Conscople" Path="Conscople" Type="Console" Platforms="Linux,MacOS,Windows">
+<Project Name="SmartScopeConsole" Path="SmartScopeConsole" Type="Console" Platforms="Linux,MacOS,Windows">
   <References>
     <Reference Include="System" />
     <Reference Include="LabNation.Common" />
     <Reference Include="LabNation.DeviceInterface" />
-    <Reference Include="mono-curses" />
   </References>
   <Properties>
     <FrameworkVersions>
@@ -24,11 +23,6 @@
     </CustomDefinitions>
   </Properties>
   <Files>
-    <None Include="..\mono-curses\libmono-curses.dylib">
-      <Link>libmono-curses.dylib</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None> 
     <Compile Include="Main.cs" />
-    <Compile Include="Interface.cs" />
   </Files>
 </Project>
