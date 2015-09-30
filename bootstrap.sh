@@ -20,6 +20,11 @@ echo Current directory: `pwd`
 
 git submodule init
 git submodule update 
+cd DeviceInterface
+git submodule init
+git submodule update
+cd -
+
 ${CMD_PREFIX}Protobuild.exe --generate $1 
 sed -i~ -e "s/<ProjectTypeGuids>.*<\/ProjectTypeGuids>//" SmartScopeConsole/SmartScopeConsole.$1.csproj
 sed -i~ -e "s/\(<UseSGen>False<\/UseSGen>\)/\1<Externalconsole>true<\/Externalconsole>/" SmartScopeConsole/SmartScopeConsole.$1.csproj
