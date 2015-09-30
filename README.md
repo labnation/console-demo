@@ -94,20 +94,75 @@ scope.CommitSettings ();
 ```
 
 * Register for incoming data: the IScope interface allows to synchronously poll for data using ```IScope.GetScopeData()```, but you can also register a callback on ```IScope.DataSourceScope```. Once this callback is registered, the ```IScope.DataSourceScope.Start()``` is called which starts a thread that'll poll for data and call your callback when new data is available.
+
+```c#
+scope.DataSourceScope.OnNewDataAvailable += PrintVoltageBars;
+scope.DataSourceScope.Start ();
+```
+
 * Configure the ```IScope``` itself using a bunch of properties and setters methods (where properties were not possible, i.e. for channel specific settings).
-* *Synchronise the new settings* above to the SmartScope using ```IScope.CommitSettings()```. This ensures that the next acquisition is either with the settings entered before the previous CommitSettings call, or with the new settings. *DON'T FORGET THIS STEP!*
+
+```c#
+scope.LogicAnalyserEnabled = false;
+scope.Rolling = false;
+scope.SendOverviewBuffer = false;
+scope.AcquisitionLength = scope.AcquisitionLengthMin; 
+scope.TriggerHoldOff = 0; 
+scope.AcquisitionMode = AcquisitionMode.AUTO; 
+scope.PreferPartial = false;
+scope.SetViewPort (0, scope.AcquisitionLength);
+
+foreach (AnalogChannel ch in AnalogChannel.List) {
+	scope.SetVerticalRange (ch, -3, 3);
+	scope.SetYOffset (ch, 0);
+	scope.SetCoupling (ch, Coupling.DC);
+	scope.SetProbeDivision (ch, ProbeDivision.X10);
+}
+
+scope.TriggerAnalog = new AnalogTriggerValue () {
+	channel = AnalogChannel.ChA,
+	direction = TriggerDirection.RISING,
+	level = 1.0f
+};
+```
+
+* **Synchronise the new settings** above to the SmartScope using ```IScope.CommitSettings```. This ensures that the next acquisition is either with the settings entered before the previous CommitSettings call, or with the new settings. *DON'T FORGET THIS STEP!*
+
+```c#
+scope.CommitSettings ();
+```
 * Print the scope configuration for your pleasure using ```PrintScopeConfiguration()``` and a bunch of ```String.Format()``` calls
-* Set the *acquisition running* by setting ```IScope.Running = true``` and again calling ```IScope.CommitSettings()```
+* Set the *acquisition running*
+
+```c#
+scope.Running = true;
+scope.CommitSettings ();
+```
 
 ## OnNewDataAvailable - A dual voltmeter
 This is where we do stuff with the measure data. It's all quite simple
-* From the data package coming from the scope, we get the viewport data for each channel
-* The average is calculated and displayed using crazy console print
+* The ```PrintVoltageBars``` method we registered with ```IScope.DataSourceScope``` looks as follows
+
+```c#
+static void PrintVoltageBars (DataPackageScope p, EventArgs e)
+{
+	//Do something nice with the DataPackageScope
+}
+```
+* From the data package coming from the scope, we get the viewport data for each channel and compute the average for each channel. Then we display it using crazy console print.
+```c#
+foreach (AnalogChannel ch in AnalogChannel.List) {
+	ChannelData d = p.GetData (DataSourceType.Viewport, ch);
+	float average = ((float[])d.array).Average ();
+	//Crazy console print code below
+	//...
+}
+```
 
 ## Viewport, Acquisition Buffer, What?!
 Because we have this massive 4 megasample memory and a mere USB 1.0 controller in the SmartScope, and because we don't want to load your host system with handling 2 times 4 megasamples at 100Hz or so, and also because you probably don't care about all those 4 million dots all the time, we separated things:
-* *The acquisition*: this is defined by the number of samples you would like to be able to search once you hit the stop button. It's minimally 2048 samples and goes up to 4 megasamples. Though currently we have a software limit at 512kSa which you can lift in [SmartScope.cs:80](/labnation/DeviceInterface/blob/master/Devices/SmartScope.cs#L80)
-* *The viewport*: this is a window within the acquisition which is effectively streamed to the host. The acquisition is subsampled so that the viewport spans at most 2048 samples. The viewport is defined by a time offset and time span.
+* **The Acquisition**: this is defined by the number of samples you would like to be able to search once you hit the stop button. It's minimally 2048 samples and goes up to 4 megasamples. Though currently we have a software limit at 512kSa which you can lift in [SmartScope.cs:80](/labnation/DeviceInterface/blob/master/Devices/SmartScope.cs#L80)
+* **The Viewport**: this is a window within the acquisition which is effectively streamed to the host. The acquisition is subsampled so that the viewport spans at most 2048 samples. The viewport is defined by a time offset and time span.
 
 ### The stop button
-When acquiring, you can set ```IScope.running``` to false (and call ```CommitSettings()```). Once this is done, one more trigger condition is expected and the acquisition will stop, resulting in free time on the USB to transfer the entire acquisition buffer to the host. You can monitor the progress of this transfer using the ```DataPackageScope.FullAcquisitionFetchProgress``` field, which equals ```1f``` after completion. Once this is the case, you can call ```DataPackageScope.GetData(DataSourceType.Acquisition, AnalogChannel.ChA)``` to use Channel A's acquisition buffer. Note that the ```ChannelData.Partial``` flag for ChannelData of type ```DataSourceType.Acquisition``` is always true due to array copy efficiency considerations, so *do not use it instead of ```DataPackageScope.FullAcquisitionFetchProgress```*. The ```Partial``` flag has its function on viewport data for slow acquisitions such as when rolling, allowing you to decide whether to process/display the data or not in your app.
+When acquiring, you can set ```IScope.running``` to false (and call ```CommitSettings()```). Once this is done, one more trigger condition is expected and the acquisition will stop, resulting in free time on the USB to transfer the entire acquisition buffer to the host. You can monitor the progress of this transfer using the ```DataPackageScope.FullAcquisitionFetchProgress``` field, which equals ```1f``` after completion. Once this is the case, you can call ```DataPackageScope.GetData(DataSourceType.Acquisition, AnalogChannel.ChA)``` to use Channel A's acquisition buffer. Note that the ```ChannelData.Partial``` flag for ChannelData of type ```DataSourceType.Acquisition``` is always true due to array copy efficiency considerations, so **do not use it instead of ```DataPackageScope.FullAcquisitionFetchProgress```**. The ```Partial``` flag has its function on viewport data for slow acquisitions such as when rolling, allowing you to decide whether to process/display the data or not in your app.
