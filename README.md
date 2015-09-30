@@ -7,6 +7,12 @@ Then open the generated ```SmartScopeConsole.<Platform>.sln``` file with Xamarin
 
 When running the app, the smartscope is configured to make 20us acquisitions in AUTO trigger mode (i.e. timeout when no trigger) with an input range of -3V to 3V on both channels. They are configured in DC coupling for a x10 probe and a 0V vertical offset.
 
+## Console in linux
+MonoDevelop doesn't seem to run the app in an external console by default which leads to poor console support. You can change that though in the **project options of SmartScopeConsole**
+```
+Run > General > Run on external console
+```
+
 # app output
 The app shows the average voltage measured on each channel like below:
 
