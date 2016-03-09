@@ -89,7 +89,7 @@ namespace SmartScopeConsole
 			/* Horizontal / time settings */
 			/******************************/
 			//Disable logic analyser
-			scope.LogicAnalyserEnabled = false;
+			scope.ChannelSacrificedForLogicAnalyser = null;
 			//Don't use rolling mode
 			scope.Rolling = false;
 			//Don't fetch overview buffer for faster transfers
@@ -120,9 +120,9 @@ namespace SmartScopeConsole
 			}
 
 			// Set trigger to channel A
-			scope.TriggerAnalog = new AnalogTriggerValue () {
+			scope.TriggerValue = new TriggerValue () {
 				channel = AnalogChannel.ChA,
-				direction = TriggerDirection.RISING,
+				edge = TriggerEdge.RISING,
 				level = 1.0f
 			};
 
@@ -140,7 +140,7 @@ namespace SmartScopeConsole
 		/// <summary>
 		/// Print 2 bars representing the average voltage of each smartscope channel
 		/// </summary>
-		static void PrintVoltageBars (DataPackageScope p, EventArgs e)
+		static void PrintVoltageBars (DataPackageScope p, DataSource s)
 		{
 			int consoleWidth = Console.BufferWidth;
 			if(consoleWidth < 50)
@@ -217,7 +217,6 @@ namespace SmartScopeConsole
 			foreach (AnalogChannel ch in AnalogChannel.List) {
 				string chName = ch.Name;
 				c += String.Format ("======= Channel {0:s} =======\n", chName);
-				c += String.Format (fCh, chName, "Vertical range", String.Format ("[{0}:{1}]", printVolt (scope.GetVerticalRange (ch) [0]), printVolt (scope.GetVerticalRange (ch) [1])));
 				c += String.Format (fCh, chName, "Vertical offset", printVolt (scope.GetYOffset (ch)));
 				c += String.Format (fCh, chName, "Coupling", scope.GetCoupling (ch).ToString ("G"));
 				c += String.Format (fCh, chName, "Probe division", scope.GetProbeDivision (ch).ToString ());

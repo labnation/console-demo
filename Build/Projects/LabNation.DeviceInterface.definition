@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Name="LabNation.DeviceInterface" Path="DeviceInterface" Type="Library" Platforms="Android,iOS,Linux,MacOS,Windows">
+<Project Name="LabNation.DeviceInterface" Path="DeviceInterface" Type="Library" Platforms="Android,iOS,Linux,MacOS,Windows,WindowsGL">
   <Properties>
     <FrameworkVersions>
       <Platform Name="Android">
@@ -14,6 +14,7 @@
       <Platform Name="Linux">TRACE;LINUX</Platform>
       <Platform Name="MacOS">MONOMAC</Platform>
       <Platform Name="Windows">TRACE;WINDOWS;WINUSB</Platform>
+	  <Platform Name="WindowsGL">TRACE;WINDOWS;WINUSB</Platform>
     </CustomDefinitions>
 	<NoWarn>1591</NoWarn>
   </Properties>
@@ -35,9 +36,7 @@
     <Compile Include="DataSources\DataPackages\DataPackageScope.cs" />
     <Compile Include="DataSources\DataSourceScope.cs" />
     <Compile Include="DataSources\DataStorage\ChannelBuffer.cs" />
-    <Compile Include="DataSources\DataStorage\ChannelBufferTypes.cs" />
     <Compile Include="DataSources\DataStorage\IChannelBuffer.cs" />
-    <Compile Include="DataSources\DataStorage\RecordingHandler.cs" />
     <Compile Include="DataSources\DataStorage\RecordingScope.cs" />
     <Compile Include="Memories\ByteMemory.cs" />
     <Compile Include="Memories\DeviceMemory.cs" />
@@ -54,6 +53,7 @@
     <Compile Include="Memories\ScopeFpgaSettingsMemory.cs" />
     <Compile Include="Memories\ScopePicRegisterMemory.cs" />
     <Compile Include="Memories\ScopeStrobeMemory.cs" />
+	<Compile Include="Tools.cs" />
 	<Compile Include="Devices\DeviceManager.cs" />
     <Compile Include="Devices\IScope.cs" />
 	<Compile Include="Devices\IDevice.cs" />
@@ -74,7 +74,7 @@
       <Platforms>iOS,Linux,MacOS</Platforms>
     </Compile>
     <Compile Include="Hardware\InterfaceManagerWinUsb.cs">
-      <Platforms>Windows</Platforms>
+      <Platforms>Windows,WindowsGL</Platforms>
     </Compile>
     <Compile Include="Hardware\InterfaceManagerXamarin.cs">
       <Platforms>Android</Platforms>
@@ -85,7 +85,7 @@
       <Platforms>iOS,Linux,MacOS</Platforms>
     </Compile>
     <Compile Include="Hardware\SmartScopeUsbInterfaceWinUsb.cs">
-      <Platforms>Windows</Platforms>
+      <Platforms>Windows,WindowsGL</Platforms>
     </Compile>
     <Compile Include="Hardware\SmartScopeUsbInterfaceXamarin.cs">
       <Platforms>Android</Platforms>
@@ -108,14 +108,16 @@
     <EmbeddedResource Include="SmartScope_A10.bin" />
     <EmbeddedResource Include="SmartScope_A12.bin" />
 	<EmbeddedResource Include="SmartScope_A14.bin" />
+	<EmbeddedResource Include="SmartScope_A15.bin" />
+	<EmbeddedResource Include="SmartScope_A16.bin" />
 	
 	<Content Include="driver\wdi-simple.exe">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		<Platforms>Windows</Platforms>
+		<Platforms>Windows,WindowsGL</Platforms>
 	</Content>
 	<Content Include="driver\install_smartscope_driver.bat">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		<Platforms>Windows</Platforms>
+		<Platforms>Windows,WindowsGL</Platforms>
 	</Content>
   </Files>
 </Project>
