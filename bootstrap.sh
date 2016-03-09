@@ -4,9 +4,11 @@ set -e
 if [[ -z "$1" ]]; then
   echo Usage:
   echo 
-  echo "$0 <Platform>"
+  echo "$0 <Platform> [NoClean]"
   echo 
   echo "Where <Platform> can be Linux|MacOS|Windows"
+  echo
+  echo "If NoClean is specified, submodules won't be updated"
   exit -1
 fi
 
@@ -18,12 +20,14 @@ else
 fi
 echo Current directory: `pwd`
 
-git submodule init
-git submodule update 
-cd DeviceInterface
-git submodule init
-git submodule update
-cd -
+if [[ x$2 != xNoClean ]]; then
+  git submodule init
+  git submodule update 
+  cd DeviceInterface
+  git submodule init
+  git submodule update
+  cd -
+fi
 
 ${CMD_PREFIX}Protobuild.exe --generate $1 
 sed -i~ -e "s/<ProjectTypeGuids>.*<\/ProjectTypeGuids>//" SmartScopeConsole/SmartScopeConsole.$1.csproj
