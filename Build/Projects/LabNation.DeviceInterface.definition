@@ -73,8 +73,9 @@
     <Compile Include="Devices\DummyScope.cs" />
     <Compile Include="Devices\DummyScopeFile.cs" />
     <Compile Include="Devices\DummyScopeWaves.cs" />
+    <Compile Include="Devices\HackerSpecialManager.cs" />
+    <Compile Include="Devices\HackerSpecial.cs" />
     <Compile Include="Devices\SmartScope.cs" />
-    <Compile Include="Devices\SmartScopeFlashHelpers.cs" />
     <Compile Include="Devices\SmartScopeHeader.cs" />
     <Compile Include="Devices\SmartScopeRom.cs" />
     <Compile Include="Devices\SmartScopeSettings.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Hardware\ISmartScopeInterface.cs" />
     <Compile Include="Hardware\ISmartScopeInterfaceUsb.cs" />
 
+    <Compile Include="Hardware\SmartScopeFlashHelpers.cs" />
     <Compile Include="Hardware\SmartScopeInterfaceHelpers.cs" />
     <Compile Include="Hardware\SmartScopeInterfaceEthernet.cs"/>
     
@@ -144,6 +146,7 @@
 	<EmbeddedResource Include="SmartScope_A15.bin" />
 	<EmbeddedResource Include="SmartScope_A16.bin" />
     <EmbeddedResource Include="SmartScope_A17.bin" />
+    <EmbeddedResource Include="SmartScopeHackerSpecial.bin" />
 	
 	<Content Include="driver\wdi-simple.exe">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
