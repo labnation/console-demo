@@ -5,6 +5,9 @@ using LabNation.DeviceInterface.DataSources;
 using System.Threading;
 using System.IO;
 using System.Linq;
+#if WINDOWS
+using System.Windows.Forms;
+#endif
 
 namespace SmartScopeConsole
 {
@@ -20,7 +23,8 @@ namespace SmartScopeConsole
 		static IScope scope;
 		static bool running = true;
 
-		public static void Main (string[] args)
+        [STAThread]
+		static void Main (string[] args)
 		{
 			//Open logger on console window
 			FileLogger consoleLog = new FileLogger (new StreamWriter (Console.OpenStandardOutput ()), LogLevel.INFO);
@@ -34,6 +38,9 @@ namespace SmartScopeConsole
 
 			ConsoleKeyInfo cki = new ConsoleKeyInfo();
 			while (running) {
+#if WINDOWS
+                Application.DoEvents();
+#endif
 				Thread.Sleep (100);
 
 				if (Console.KeyAvailable) {
@@ -41,7 +48,9 @@ namespace SmartScopeConsole
 					HandleKey (cki);
 				}
 			}
+            Logger.Info("Stopping device manager");
 			deviceManager.Stop ();
+            Logger.Info("Stopping Logger");
 			consoleLog.Stop ();
 		}
 
@@ -49,7 +58,7 @@ namespace SmartScopeConsole
 		{
 			//Only accept devices of the IScope type (i.e. not IWaveGenerator)
 			//and block out the fallback device (dummy scope)
-			if (connected && dev is IScope && dev != deviceManager.fallbackDevice) {
+			if (connected && dev is IScope && !(dev is DummyScope)) {
 				Logger.Info ("Device connected of type " + dev.GetType ().Name + " with serial " + dev.Serial);
 				scope = (IScope)dev;
 				ConfigureScope ();
@@ -157,7 +166,7 @@ namespace SmartScopeConsole
 				//DataPackageScope is a rather big class containing
 				//pretty much everything there is to know about
 				//the acquired data.
-				ChannelData d = p.GetData (DataSourceType.Viewport, ch);
+                ChannelData d = p.GetData(ChannelDataSourceScope.Viewport, ch);
 				//Average out the voltages
 				float average = ((float[])d.array).Average ();
 

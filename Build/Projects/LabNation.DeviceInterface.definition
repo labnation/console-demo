@@ -5,7 +5,20 @@
       <Platform Name="Android">
         <Version>v4.0.3</Version>
       </Platform>
-    </FrameworkVersions>
+      <Platform Name="Windows">
+        <Version>v4.5</Version>
+      </Platform>
+      <Platform Name="WindowsGL">
+        <Version>v4.5</Version>
+      </Platform>
+      <Platform Name="MacOS">
+        <Version>v4.5</Version>
+      </Platform>
+      <Platform Name="Linux">
+        <Version>v4.5</Version>
+      </Platform>
+</FrameworkVersions>
+    <LangVersion>5</LangVersion>
     <RootNamespace>LabNation.DeviceInterface</RootNamespace>
     <PlatformSpecificOutputFolder>True</PlatformSpecificOutputFolder>
     <CustomDefinitions>
@@ -31,13 +44,11 @@
     <Reference Include="MatlabFileIO" />
     <Reference Include="WinFormReferences" />
     <Reference Include="LibUsbDotNet" />
+    <Reference Include="Mono.Zeroconf" />
   </References>
   <Files>
-    <Compile Include="DataSources\DataPackages\DataPackageScope.cs" />
+    <Compile Include="DataSources\DataPackageScope.cs" />
     <Compile Include="DataSources\DataSourceScope.cs" />
-    <Compile Include="DataSources\DataStorage\ChannelBuffer.cs" />
-    <Compile Include="DataSources\DataStorage\IChannelBuffer.cs" />
-    <Compile Include="DataSources\DataStorage\RecordingScope.cs" />
     <Compile Include="Memories\ByteMemory.cs" />
     <Compile Include="Memories\DeviceMemory.cs" />
     <Compile Include="Memories\MAX19506Memory.cs" />
@@ -70,8 +81,9 @@
 	<Compile Include="Devices\SmartScopeRegisterGroups.cs" />
 	<Compile Include="Devices\SmartScopeAwg.cs" />
     <Compile Include="Hardware\InterfaceManager.cs" />
+    <Compile Include="Hardware\InterfaceManagerZeroConf.cs"/>
     <Compile Include="Hardware\InterfaceManagerLibUsb.cs">
-      <Platforms>iOS,Linux,MacOS</Platforms>
+      <Platforms>Linux,MacOS</Platforms>
     </Compile>
     <Compile Include="Hardware\InterfaceManagerWinUsb.cs">
       <Platforms>Windows,WindowsGL</Platforms>
@@ -79,17 +91,37 @@
     <Compile Include="Hardware\InterfaceManagerXamarin.cs">
       <Platforms>Android</Platforms>
     </Compile>
-    <Compile Include="Hardware\ISmartScopeUsbInterface.cs" />
-    <Compile Include="Hardware\SmartScopeUsbInterfaceHelpers.cs" />
-    <Compile Include="Hardware\SmartScopeUsbInterfaceLibUsb.cs">
-      <Platforms>iOS,Linux,MacOS</Platforms>
+    
+    <Compile Include="Hardware\IHardwareInterface.cs" />
+    <Compile Include="Hardware\DummyInterface.cs" />
+    
+    <Compile Include="Hardware\ISmartScopeInterface.cs" />
+    <Compile Include="Hardware\ISmartScopeInterfaceUsb.cs" />
+
+    <Compile Include="Hardware\SmartScopeInterfaceHelpers.cs" />
+    <Compile Include="Hardware\SmartScopeInterfaceEthernet.cs"/>
+    
+    <Compile Include="Hardware\SmartScopeInterfaceLibUsb.cs">
+      <Platforms>Linux,MacOS</Platforms>
     </Compile>
-    <Compile Include="Hardware\SmartScopeUsbInterfaceWinUsb.cs">
+    <Compile Include="Hardware\SmartScopeInterfaceWinUsb.cs">
       <Platforms>Windows,WindowsGL</Platforms>
     </Compile>
-    <Compile Include="Hardware\SmartScopeUsbInterfaceXamarin.cs">
+    <Compile Include="Hardware\SmartScopeInterfaceXamarin.cs">
       <Platforms>Android</Platforms>
     </Compile>
+    
+    <Compile Include="Net\BandwidthMonitor.cs">
+      <Platforms>Linux,MacOS,Windows,WindowsGL</Platforms>
+    </Compile>
+    <Compile Include="Net\Constants.cs"/>
+    <Compile Include="Net\InterfaceServer.cs">
+      <Platforms>Linux,MacOS,Windows,WindowsGL</Platforms>
+    </Compile>
+    <Compile Include="Net\Monitor.cs">
+      <Platforms>Linux,MacOS,Windows,WindowsGL</Platforms>
+    </Compile>
+    
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.cs" />
     <None Include="Memories\ScopeConstants_GEN.tt">
@@ -98,6 +130,7 @@
     </None>
     <None Include="libusb\libusb-1.0.0.dylib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Platforms>MacOS</Platforms>
     </None>
     <None Include="LibUsbDotNet.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -110,6 +143,7 @@
 	<EmbeddedResource Include="SmartScope_A14.bin" />
 	<EmbeddedResource Include="SmartScope_A15.bin" />
 	<EmbeddedResource Include="SmartScope_A16.bin" />
+    <EmbeddedResource Include="SmartScope_A17.bin" />
 	
 	<Content Include="driver\wdi-simple.exe">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
