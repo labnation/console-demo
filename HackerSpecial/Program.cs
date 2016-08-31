@@ -39,6 +39,7 @@ namespace HackerSpecialTest
             hsManager.Start();
 
             ConsoleKeyInfo cki = new ConsoleKeyInfo();
+            byte offset = 0;
             while (running)
             {
 #if WINDOWS
@@ -61,6 +62,32 @@ namespace HackerSpecialTest
                                 byte val = device.FpgaRom[i].Read().GetByte();
                                 Logger.Info("Reg {0} = 0x{1:X}", i, val);
                             }
+                        }
+                    }
+
+                    if (cki.Key == ConsoleKey.U)
+                    {
+                        Logger.Info("testing user bank");
+                        offset++;
+                        for (uint i = 0; i < 30; i++)
+                        {
+                            byte val = device.FpgaUserMemory[i].Read().GetByte();
+                            byte newval = (byte)(i + offset);
+                            Logger.Info("Reading user mem {0} = 0x{1:X} - updating with 0x{2:X}", i, val, newval);
+                            device.FpgaUserMemory[i].WriteImmediate(newval);
+                        }
+                    }
+
+                    if (cki.Key == ConsoleKey.P)
+                    {
+                        Logger.Info("testing register bank");
+                        offset++;
+                        for (uint i = 0; i < 30; i++)
+                        {
+                            byte val = device.FpgaSettingsMemory[i].Read().GetByte();
+                            byte newval = (byte)(255 - i + offset);
+                            Logger.Info("Reading user mem {0} = 0x{1:X} - updating with 0x{2:X}", i, val, newval);
+                            device.FpgaUserMemory[i].WriteImmediate(newval);
                         }
                     }
                 }
