@@ -61,6 +61,7 @@
       <DependentUpon>ScopeConstants_GEN.tt</DependentUpon>
     </Compile>
     <Compile Include="Memories\ScopeFpgaRom.cs" />
+    <Compile Include="Memories\ScopeFpgaI2cMemory.cs" />
     <Compile Include="Memories\ScopeFpgaSettingsMemory.cs" />
     <Compile Include="Memories\ScopePicRegisterMemory.cs" />
     <Compile Include="Memories\ScopeStrobeMemory.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Devices\DummyScope.cs" />
     <Compile Include="Devices\DummyScopeFile.cs" />
     <Compile Include="Devices\DummyScopeWaves.cs" />
-    <Compile Include="Devices\HackerSpecialManager.cs" />
     <Compile Include="Devices\HackerSpecial.cs" />
     <Compile Include="Devices\SmartScope.cs" />
     <Compile Include="Devices\SmartScopeHeader.cs" />

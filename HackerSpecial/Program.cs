@@ -1,13 +1,17 @@
-﻿using System;
+﻿#if WINDOWS
+using System.Windows.Forms;
+#endif
+
+using System;
 using LabNation.DeviceInterface.Devices;
 using LabNation.Common;
 using LabNation.DeviceInterface.DataSources;
 using System.Threading;
 using System.IO;
 using System.Linq;
-#if WINDOWS
-using System.Windows.Forms;
-#endif
+using System.Collections.Generic;
+using LabNation.DeviceInterface.Hardware;
+
 
 namespace HackerSpecialTest
 {
@@ -16,7 +20,7 @@ namespace HackerSpecialTest
         /// <summary>
         /// The DeviceManager detects device connections
         /// </summary>
-        static HackerSpecialManager hsManager;
+        static DeviceManager hsManager;
         static HackerSpecial device;
         static bool running = true;
 
@@ -30,7 +34,8 @@ namespace HackerSpecialTest
             Logger.Info("---------------------------------");
 
             //Set up device manager with a device connection handler (see below)
-            hsManager = new HackerSpecialManager(connectHandler);
+
+            hsManager = new DeviceManager(null, connectHandler, new Dictionary<Type,Type>() { { typeof(ISmartScopeInterface), typeof(HackerSpecial) } });
             hsManager.Start();
 
             ConsoleKeyInfo cki = new ConsoleKeyInfo();
