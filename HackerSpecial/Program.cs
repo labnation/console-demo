@@ -52,9 +52,9 @@ namespace HackerSpecialTest
                     cki = Console.ReadKey(true);
                     HandleKey(cki);
 
-                    if (cki.Key == ConsoleKey.R)
+                    if (device != null)
                     {
-                        if (device != null)
+                        if (cki.Key == ConsoleKey.R)
                         {
                             Logger.Info("Reading ROM");
                             for (uint i = 0; i < device.FpgaRom.Registers.Count; i++)
@@ -63,31 +63,44 @@ namespace HackerSpecialTest
                                 Logger.Info("Reg {0} = 0x{1:X}", i, val);
                             }
                         }
-                    }
 
-                    if (cki.Key == ConsoleKey.U)
-                    {
-                        Logger.Info("testing user bank");
-                        offset++;
-                        for (uint i = 0; i < 30; i++)
+                        if (cki.Key == ConsoleKey.U)
                         {
-                            byte val = device.FpgaUserMemory[i].Read().GetByte();
-                            byte newval = (byte)(i + offset);
-                            Logger.Info("Reading user mem {0} = 0x{1:X} - updating with 0x{2:X}", i, val, newval);
-                            device.FpgaUserMemory[i].WriteImmediate(newval);
+                            Logger.Info("testing user bank");
+                            offset++;
+                            for (uint i = 0; i < 30; i++)
+                            {
+                                byte val = device.FpgaUserMemory[i].Read().GetByte();
+                                byte newval = (byte)(i + offset);
+                                Logger.Info("Reading user mem {0} = 0x{1:X} - updating with 0x{2:X}", i, val, newval);
+                                device.FpgaUserMemory[i].WriteImmediate(newval);
+                            }
                         }
-                    }
 
-                    if (cki.Key == ConsoleKey.P)
-                    {
-                        Logger.Info("testing register bank");
-                        offset++;
-                        for (uint i = 0; i < 30; i++)
+                        if (cki.Key == ConsoleKey.P)
                         {
-                            byte val = device.FpgaSettingsMemory[i].Read().GetByte();
-                            byte newval = (byte)(255 - i + offset);
-                            Logger.Info("Reading user mem {0} = 0x{1:X} - updating with 0x{2:X}", i, val, newval);
-                            device.FpgaUserMemory[i].WriteImmediate(newval);
+                            Logger.Info("testing register bank");
+                            offset++;
+                            for (uint i = 0; i < 30; i++)
+                            {
+                                byte val = device.FpgaSettingsMemory[i].Read().GetByte();
+                                byte newval = (byte)(255 - i + offset);
+                                Logger.Info("Reading user mem {0} = 0x{1:X} - updating with 0x{2:X}", i, val, newval);
+                                device.FpgaSettingsMemory[i].WriteImmediate(newval);
+                            }
+                        }
+
+                        if (cki.Key == ConsoleKey.D)
+                        {
+                            Logger.Info("Fetching scope data");
+                            byte[] data = device.iface.GetData(64);
+                            Logger.Info("Got {0:d} bytes", data.Length);
+                            for (int i = 0; i < data.Length; i++)
+                            {
+                                Logger.LogC(LogLevel.INFO, String.Format("{0,2:X0} ", data[i]), ConsoleColor.Green);
+                                if (i % 16 == 15)
+                                    Logger.LogC(LogLevel.INFO, "\n");
+                            }
                         }
                     }
                 }
@@ -106,6 +119,7 @@ namespace HackerSpecialTest
             {
                 Logger.Info("Device connected of type " + dev.GetType().Name + " with serial " + dev.Serial);
                 device = (HackerSpecial)dev;
+                Usage();
             }
             else
             {
@@ -113,8 +127,24 @@ namespace HackerSpecialTest
             }
         }
 
+        private static void Usage()
+        {
+            Logger.Info("?          : Display this message");
+            Logger.Info("Q/X/Esc    : Quit");
+            Logger.Info("U          : Test user register bank");
+            Logger.Info("R          : Test FPGA ROM");
+            Logger.Info("P          : Test settings register bank");
+            Logger.Info("D          : Tetch FPGA data");
+            Logger.Info("------------------------------------------");
+        }
+
         static void HandleKey(ConsoleKeyInfo k)
         {
+            if (k.KeyChar == '?')
+            {
+                Usage();
+                return;
+            }
             switch (k.Key)
             {
                 case ConsoleKey.Q:
