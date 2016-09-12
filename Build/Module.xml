@@ -5,7 +5,7 @@
   <DefaultLinuxPlatforms>Linux</DefaultLinuxPlatforms>
   <DefaultMacOSPlatforms>MacOS,iOS,Android</DefaultMacOSPlatforms>
   <DefaultWindowsPlatforms>Windows</DefaultWindowsPlatforms>
-  <DefaultStartupProject>SmartScopeConsole</DefaultStartupProject>
+  <DefaultStartupProject>HackerSpecialTest</DefaultStartupProject>
   <SupportedPlatforms>Android,Linux,Windows,iOS,MacOS</SupportedPlatforms>
   <GenerateNuGetRepositories>true</GenerateNuGetRepositories>
 </Module>

@@ -15,7 +15,7 @@
     <LangVersion>5</LangVersion>
 	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <NoWarn>1591</NoWarn>
-    <RootNamespace>SmartScope on Console</RootNamespace>
+    <RootNamespace>SmartScopeConsole</RootNamespace>
     <PlatformSpecificOutputFolder>True</PlatformSpecificOutputFolder>
     <CustomDefinitions>
       <Platform Name="Android">TRACE;ANDROID</Platform>

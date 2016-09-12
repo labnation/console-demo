@@ -40,6 +40,7 @@ namespace HackerSpecialTest
 
             ConsoleKeyInfo cki = new ConsoleKeyInfo();
             byte offset = 0;
+
             while (running)
             {
 #if WINDOWS
@@ -90,6 +91,63 @@ namespace HackerSpecialTest
                             }
                         }
 
+                        if (cki.Key == ConsoleKey.Enter)
+                        {
+                            Console.Write("Reg? >");
+                            string regStr = Console.ReadLine();
+                            try
+                            {
+                                uint reg = uint.Parse(regStr);
+                                string valStr = "";
+                                do
+                                {
+                                    Console.Write("Val? >");
+                                    valStr = Console.ReadLine();
+                                    byte val;
+                                    try
+                                    {
+                                        val = byte.Parse(valStr);
+                                        device.FpgaSettingsMemory[reg].WriteImmediate(val);
+                                        Console.WriteLine(String.Format("Write to reg {0}: 0x{1:X}", reg, val));
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        val = device.FpgaSettingsMemory[reg].Read().GetByte();
+                                        Console.WriteLine(String.Format("Read reg {0}: 0x{1:X}", reg, val));
+                                    }
+                                } while (valStr != "");
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Failed to parse input");
+                            }
+
+                            
+                        }
+
+                        if (cki.Key == ConsoleKey.A)
+                        {
+                            if (cki.Modifiers.HasFlag(ConsoleModifiers.Shift))
+                            {
+                                Logger.Info("Resetting ADC regs");
+                                device.WriteAdcReg(0xA, 0x5A);
+                            }
+                            else if (cki.Modifiers.HasFlag(ConsoleModifiers.Control))
+                            {
+                                Logger.Info("Configuring ADC");
+                                device.ConfigureAdc();
+                            }
+                            else
+                            {
+                                Logger.Info("Reading ADC regs");
+                                for (int i = 0; i < 9; i++)
+                                {
+                                    byte val = device.ReadAdcReg((uint)i);
+                                    Logger.Info("Reading ADC mem {0} = 0x{1:X}", i, val);
+                                }
+                            }
+                        }
+
                         if (cki.Key == ConsoleKey.D)
                         {
                             Logger.Info("Fetching scope data");
@@ -119,12 +177,14 @@ namespace HackerSpecialTest
             {
                 Logger.Info("Device connected of type " + dev.GetType().Name + " with serial " + dev.Serial);
                 device = (HackerSpecial)dev;
+                device.ConfigureAdc();
                 Usage();
             }
             else
             {
                 device = null;
             }
+            
         }
 
         private static void Usage()

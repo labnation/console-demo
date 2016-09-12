@@ -62,7 +62,7 @@
     </Compile>
     <Compile Include="Memories\ScopeFpgaRom.cs" />
     <Compile Include="Memories\ScopeFpgaI2cMemory.cs" />
-    <Compile Include="Memories\ScopeFpgaSettingsMemory.cs" />
+    <Compile Include="Memories\ByteMemoryEnum.cs" />
     <Compile Include="Memories\ScopePicRegisterMemory.cs" />
     <Compile Include="Memories\ScopeStrobeMemory.cs" />
 	<Compile Include="Tools.cs" />
